@@ -20,7 +20,7 @@ export default function CABox({ chain, address, className = "" }: CABoxProps) {
             onClick={copy}
             className={`group w-full max-w-3xl text-left rounded-2xl border border-blue-400/70
                   bg-white/70 backdrop-blur-sm shadow-[0_8px_30px_rgba(59,130,246,0.15)]
-                  hover:bg-white/90 transition
+                  hover:bg-white/90 transition cursor-pointer
                   px-5 py-4 ${className}`}
         >
             <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ export default function CABox({ chain, address, className = "" }: CABoxProps) {
                     </div>
                 </div>
 
-                <span className="text-md font-semibold text-blue-700/80 opacity-0 group-hover:opacity-100 transition cursor-pointer">
+                <span className="text-md font-semibold text-blue-700/80 opacity-0 group-hover:opacity-100 transition">
           {copied ? "Copied!" : "Copy"}
         </span>
             </div>
