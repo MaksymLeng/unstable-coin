@@ -8,3 +8,8 @@ export type BackgroundGraphProps = {
     jitterY?: number;       // шум по Y
     amplitude?: number;     // «сила» шага случайного блуждания по Y
 };
+
+export type LinkButtonProps = {
+    label: string
+    href: string
+}
