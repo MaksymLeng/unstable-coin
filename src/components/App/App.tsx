@@ -1,14 +1,16 @@
 import {NavBar} from "@/components/NavBar/NavBar.tsx";
 import BackgroundGraph from "@/components/BackgroundGraph/BackgroundGraph.tsx";
+import {Outlet} from "react-router-dom";
+import FooterNav from "@/components/FooterNav/FooterNav.tsx";
 
 function App() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-blue-100">
-        <NavBar/>
+
         <BackgroundGraph
             className="absolute inset-0 z-0 w-full h-full pointer-events-none"
-            color="#0a2bd8"
+            color="#50a2ff"
             lineWidth={5}
             speed={10}
             stepX={1}
@@ -16,7 +18,13 @@ function App() {
             jitterX={2}
             jitterY={2}
         />
-
+        <div className="relative z-10 min-h-screen flex flex-col">
+            <NavBar />
+            <main className="flex-1">
+                <Outlet />
+            </main>
+            <FooterNav />
+        </div>
     </div>
   )
 }

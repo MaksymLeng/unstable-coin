@@ -20,14 +20,14 @@ export function NavBar() {
     const [open, setOpen] = useState(false)
 
     return (
-        <div className="flex justify-between w-[92%] items-center mx-auto mt-5">
+        <div className="flex justify-between w-[92%] items-center mx-auto mt-5 z-10">
             <div className="flex flex-col justify-center items-center gap-2">
                 <img src="/logo1.png" alt="logo" className="w-20 h-20"/>
             </div>
             <DropdownMenu open={open} onOpenChange={setOpen}>
                 <DropdownMenuTrigger asChild className="cursor-pointer p-6">
                     <Button className="bg-blue-400 text-black font-bold rounded-xl shadow-md hover:bg-blue-500">
-                        BUY $USDUC {open ? "▼" : "▲"}
+                        BUY $USDUC {open ? "▲" : "▼"}
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-blue-400 rounded-xl shadow-lg mt-2">
