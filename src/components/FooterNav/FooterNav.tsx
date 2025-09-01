@@ -1,13 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { cn } from "@/lib/utils"
-
-const tabs = [
-    { to: "/", label: "STATS", exact: true },
-    { to: "/story", label: "Story" },
-    { to: "/community", label: "COMMUNITY" },
-    { to: "/graphs", label: "Graphs" },             // или просто "STATS"
-    { to: "/disclaimer", label: "DISCLAIMER" },
-]
+import {tabs} from "@/data/TabsLink.ts";
 
 export default function FooterNav() {
     return (

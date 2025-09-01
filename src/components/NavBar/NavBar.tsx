@@ -6,28 +6,37 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import {useState} from "react";
+import {items} from "@/data/BuyBtn.ts";
 
 export function NavBar() {
-    const items = [
-        { name: "Jup.Ag",
-          href: "https://jup.ag/swap?sell=So11111111111111111111111111111111111111112&buy=CB9dDufT3ZuQXqqSfa1c5kY935TEreyBw9XJXxHKpump",
-          src: "/logos/Jupiter.png" },
-        { name: "Uniswap",
-          href: "https://app.uniswap.org/swap?chain=mainnet&inputCurrency=NATIVE&outputCurrency=0xecedb6f8108b9f7bbf499da843dced6c2bb6e270&value=1&field=input",
-          src: "/logos/Uniswap.png" },
-    ]
+    const [open, setOpen] = useState(false);
+    const [rotating, setRotating] = useState(false);
 
-    const [open, setOpen] = useState(false)
+    const handleLogoClick = () => {
+        setRotating(true)
+        setTimeout(() => setRotating(false), 800)
+    }
 
     return (
         <div className="flex justify-between w-[92%] items-center mx-auto mt-5 z-10">
-            <div className="flex flex-col justify-center items-center gap-2">
-                <img src="/logo1.png" alt="logo" className="w-20 h-20"/>
+            <div className="flex flex-col justify-center items-center gap-2"   onClick={handleLogoClick}>
+                <img
+                    src="/logo1.png"
+                    alt="logo"
+                    className={`w-20 h-20 transition-transform duration-800 ${
+                        rotating ? "rotate-[360deg]" : "rotate-0"
+                    }`}
+                />
             </div>
             <DropdownMenu open={open} onOpenChange={setOpen}>
                 <DropdownMenuTrigger asChild className="cursor-pointer p-6">
-                    <Button className="bg-blue-400 text-black font-bold rounded-xl shadow-md hover:bg-blue-500">
-                        BUY $USDUC {open ? "▲" : "▼"}
+                    <Button className="bg-blue-400 text-black font-bold rounded-xl shadow-md hover:bg-blue-500 flex items-center gap-2" aria-expanded={open}>
+                        <p>BUY $USDUC</p>
+                        <span className={`inline-flex h-4 w-4 items-center justify-center transition-transform duration-300 ease-out ${open ? "rotate-180 scale-110" : "rotate-0"}`}>
+                            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-blue-400 rounded-xl shadow-lg mt-2">

@@ -13,3 +13,76 @@ export type LinkButtonProps = {
     label: string
     href: string
 }
+
+export type CABoxProps = {
+    chain: "SOL" | "ETH" | string;
+    address: string;
+    className?: string;
+};
+
+export type Timeframe = "minute" | "5m" | "hour" | "day"
+
+export type HSeries = {
+    h1?: number | null;
+    h6?: number | null;
+    h24?: number | null;
+};
+
+export type GTRow = {
+    time: number;     // unix seconds
+    price: number;    // close/price
+    volume: number;   // volume
+};
+
+export type GeckoTerminalRow = {
+    t: number;        // unix seconds
+    o?: number | null;
+    h?: number | null;
+    l?: number | null;
+    c?: number | null;
+    v?: number | null;
+};
+
+export type PoolAttributes = {
+    // Основные метрики
+    fdv_usd?: number | null;
+    market_cap_usd?: number | null;
+    reserve_in_usd?: number | null;
+    // Объём с разбиением по периодам
+    volume_usd?: HSeries | null;
+};
+
+export type TokenAttributes = {
+    name?: string | null;
+    symbol?: string | null;
+    price_usd?: number | null;
+    fdv_usd?: number | null;
+    market_cap_usd?: number | null;
+};
+
+export type CoinState = {
+    // флаги
+    loading: boolean;
+    error: string | null;
+
+    // токен
+    name: string | null;
+    symbol: string | null;
+
+    // метрики
+    price: number | null;
+    marketCap: number | null;
+    volume24h: number | null;
+    fdv: number | null;
+
+    // график
+    chart: GTRow[];
+
+    // загрузчик
+    loadFromGecko: (params: {
+        network?: "solana";
+        pool: string;
+        token: string;
+        timeframe?: Timeframe;
+    }) => Promise<void>;
+};

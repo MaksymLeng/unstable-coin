@@ -1,16 +1,8 @@
 import { useEffect, useRef } from "react";
 import type { BackgroundGraphProps } from "../../../Type/Type";
 
-export default function BackgroundGraph({
-                                            className = "absolute inset-0 -z-10 w-full h-full",
-                                            color = "#0000cc",
-                                            lineWidth = 3,
-                                            speed = 12,      // px/сек (виртуальная скорость)
-                                            stepX = 6,       // расстояние между соседними точками
-                                            jitterX = 8,
-                                            jitterY = 3,
-                                            amplitude = 80,
-                                        }: BackgroundGraphProps) {
+export default function BackgroundGraph({ className = "absolute inset-0 -z-10 w-full h-full", color = "#0000cc", lineWidth = 3, speed = 12, stepX = 6, jitterX = 8, jitterY = 3, amplitude = 80,}: BackgroundGraphProps) {
+
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const ptsRef = useRef<{ x: number; y: number }[]>([]);
@@ -77,7 +69,6 @@ export default function BackgroundGraph({
                     // ФАЗА 2: scroll → двигаем всё влево и добавляем новую справа
                     for (let i = 0; i < pts.length; i++) pts[i].x -= stepX;
                     while (pts.length && pts[0].x < -stepX) pts.shift();
-
                     const prevY = pts.length ? pts[pts.length - 1].y : h / 2;
                     const targetY = prevY + (Math.random() - 0.5) * amplitude;
                     const y = prevY + (clamp(targetY, 0, h) - prevY) * 0.35;
