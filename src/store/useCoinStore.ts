@@ -1,7 +1,7 @@
 // store/useCoinStore.ts
 import { create } from "zustand";
 import {devtools} from 'zustand/middleware';
-import {fetchOHLCV, gtFetchPool, gtFetchToken} from "@/api/coingecko";
+import {fetchOHLCV, gtFetchToken} from "@/api/coingecko";
 import type { CoinState } from "../../Type/Type";
 
 export const useCoinStore = create<CoinState>()(devtools((set,get) => ({
@@ -17,7 +17,7 @@ export const useCoinStore = create<CoinState>()(devtools((set,get) => ({
     loadingChart: false,
     errorChart: null,
 
-    async loadFromGecko({   network = "solana", pool, token}){
+    async loadFromGecko({   network = "solana", token}){
         try {
             set({ loading: true, error: null });
 
@@ -31,15 +31,9 @@ export const useCoinStore = create<CoinState>()(devtools((set,get) => ({
             const symbol = tokenAttr?.symbol ?? null;
             const price = tokenAttr?.price_usd ?? null;
 
-            // 2) Пул — FDV/капитализация/объём
-            const poolAttr = await gtFetchPool({
-                network,
-                poolAddress: pool,
-            });
-
-            const fdv = poolAttr?.fdv_usd ?? null;
-            const marketCap = poolAttr?.market_cap_usd ?? null;
-            const volume24h = poolAttr?.volume_usd?.h24 ?? null;
+            const fdv = tokenAttr?.fdv_usd ?? null;
+            const marketCap = tokenAttr?.market_cap_usd ?? null;
+            const volume24h = tokenAttr?.volume_usd?.h24 ?? null;
 
             set({
                 loading: false,

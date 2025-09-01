@@ -1,7 +1,6 @@
 import axios from "axios";
 import type {
     Candle,
-    PoolAttributes,
     TokenAttributes,
 } from "../../Type/Type";
 
@@ -55,21 +54,6 @@ export async function fetchOHLCV(
     }
 }
 
-export async function gtFetchPool(params: {
-    network?: string;
-    poolAddress: string;
-}): Promise<PoolAttributes> {
-    try {
-        const { network = "solana", poolAddress } = params;
-        const url = `/networks/${network}/pools/${poolAddress}`;
-        const { data } = await geckoTerminalClient.get(url);
-        const attributes: PoolAttributes = data?.data?.attributes ?? {};
-        return attributes;
-    } catch (error) {
-        unwrapAxiosError(error);
-    }
-}
-
 export async function gtFetchToken(params: {
     network?: string;
     tokenAddress: string;
@@ -78,8 +62,7 @@ export async function gtFetchToken(params: {
         const { network = "solana", tokenAddress } = params;
         const url = `/networks/${network}/tokens/${tokenAddress}`;
         const { data } = await geckoTerminalClient.get(url);
-        const attributes: TokenAttributes = data?.data?.attributes ?? {};
-        return attributes;
+        return data?.data?.attributes ?? {};
     } catch (error) {
         unwrapAxiosError(error);
     }

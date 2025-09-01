@@ -4,14 +4,14 @@ import {Outlet} from "react-router-dom";
 import FooterNav from "@/components/FooterNav/FooterNav.tsx";
 import {useCoinStore} from "@/store/useCoinStore.ts";
 import {useEffect} from "react";
-import {TOKEN, POOL} from "@/data/TokenData.ts";
+import {TOKEN} from "@/data/TokenData.ts";
 
 function App() {
 
     const load = useCoinStore((state) => state.loadFromGecko);
 
     useEffect(() => {
-        load({ pool: POOL, token: TOKEN });
+        load({token: TOKEN });
     }, [load]);
 
   return (
