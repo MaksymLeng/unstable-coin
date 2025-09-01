@@ -1,9 +1,7 @@
 import axios from "axios";
 import type {
-    GeckoTerminalRow,
-    GTRow,
+    Candle,
     PoolAttributes,
-    Timeframe,
     TokenAttributes,
 } from "../../Type/Type";
 
@@ -11,7 +9,6 @@ const geckoTerminalClient = axios.create({
     baseURL: "https://api.geckoterminal.com/api/v2",
     timeout: 15000,
 })
-
 
 // --- helpers ---
 function unwrapAxiosError(error: unknown): never {
@@ -26,28 +23,33 @@ function unwrapAxiosError(error: unknown): never {
     throw new Error("Unknown error");
 }
 
-function normalizeRows(rows: GeckoTerminalRow[] = []): GTRow[] {
-    return rows
-        .filter(r => typeof r?.t === "number")
-        .map((r) => ({
-            time: r.t,
-            price: (r.c ?? r.o ?? r.h ?? r.l ?? 0) || 0,
-            volume: r.v ?? 0,
-        }));
-}
-
-// --- API ---
-export async function gtFetchOHLCV(params: {
-    network?: string;
-    poolAddress: string;
-    timeframe?: Timeframe;
-}): Promise<GTRow[]> {
+export async function fetchOHLCV(
+    network: string,
+    poolAddress: string,
+    opts: { timeframe?: "minute" | "hour" | "day"; aggregate?: 1 | 4 | 12 | 5 | 15; limit?: number } = {}
+): Promise<Candle[]> {
     try {
-        const { network = "solana", poolAddress, timeframe = "day" } = params;
-        const url = `/networks/${network}/pools/${poolAddress}/ohlcv/${timeframe}`;
-        const { data } = await geckoTerminalClient.get(url);
-        const raw: GeckoTerminalRow[] = data?.data?.attributes?.ohlcv_list ?? [];
-        return normalizeRows(raw);
+        const timeframe = opts.timeframe ?? "hour"      // почасовые свечи
+        const aggregate = opts.aggregate ?? 1           // по 1 часу
+        const limit = opts.limit ?? 12                  // последние 12 часов
+
+        const url = `/networks/${network}/pools/${poolAddress}/ohlcv/${timeframe}`
+        const res = await geckoTerminalClient.get(url, { params: { aggregate, limit } })
+
+        // ответ — массив [timestamp, open, high, low, close, volume]
+        const list: [number, string, string, string, string, string][] = res.data?.data?.attributes?.ohlcv_list ?? []
+        return list.map(([t, o, h, l, c, v]) => {
+            const ts = t * 1000
+            return {
+                time: new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                ts,
+                open: Number(o),
+                high: Number(h),
+                low: Number(l),
+                close: Number(c),
+                volume: Number(v),
+            }
+        })
     } catch (error) {
         unwrapAxiosError(error);
     }

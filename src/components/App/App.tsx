@@ -4,16 +4,14 @@ import {Outlet} from "react-router-dom";
 import FooterNav from "@/components/FooterNav/FooterNav.tsx";
 import {useCoinStore} from "@/store/useCoinStore.ts";
 import {useEffect} from "react";
-
-const POOL = "BAX9M9a5FVy5cNiewwnuwkVDzhSg9psZnb4fJ9r677tN";
-const TOKEN = "CB9dDufT3ZuQXqqSfa1c5kY935TEreyBw9XJXxHKpump";
+import {TOKEN, POOL} from "@/data/TokenData.ts";
 
 function App() {
 
-    const load = useCoinStore((s) => s.loadFromGecko);
+    const load = useCoinStore((state) => state.loadFromGecko);
 
     useEffect(() => {
-        load({ pool: POOL, token: TOKEN, timeframe: "day" });
+        load({ pool: POOL, token: TOKEN });
     }, [load]);
 
   return (

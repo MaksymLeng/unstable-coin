@@ -6,9 +6,9 @@ export function StatCard({title, value, hint,}: { title: string; value: string; 
             <CardHeader className="pb-2">
                 <CardTitle className="text-md text-slate-500">{title}</CardTitle>
             </CardHeader>
-            <CardContent className="">
+            <CardContent className="px-3 md:px-6">
                 <div className="text-3xl font-bold font-sans pb-2">{value}</div>
-                {hint && <div className="text-xs text-slate-500 mt-1">{hint}</div>}
+                {hint && <div className="text-xs text-slate-500 mt-1 mx-4 md:mx-0">{hint}</div>}
             </CardContent>
         </Card>
     )

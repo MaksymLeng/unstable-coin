@@ -21,6 +21,7 @@ export type CABoxProps = {
 };
 
 export type Timeframe = "minute" | "5m" | "hour" | "day"
+type Interval = "minute" | "hour" | "day"
 
 export type HSeries = {
     h1?: number | null;
@@ -28,20 +29,15 @@ export type HSeries = {
     h24?: number | null;
 };
 
-export type GTRow = {
-    time: number;     // unix seconds
-    price: number;    // close/price
-    volume: number;   // volume
-};
-
-export type GeckoTerminalRow = {
-    t: number;        // unix seconds
-    o?: number | null;
-    h?: number | null;
-    l?: number | null;
-    c?: number | null;
-    v?: number | null;
-};
+export type Candle = {
+    time: string
+    ts: number
+    open: number
+    high: number
+    low: number
+    close: number
+    volume: number
+}
 
 export type PoolAttributes = {
     // Основные метрики
@@ -76,13 +72,17 @@ export type CoinState = {
     fdv: number | null;
 
     // график
-    chart: GTRow[];
+    chart: Candle[];
+    loadingChart: boolean;
+    errorChart: string | null;
+    lastParams?: { network: string; pool: string; timeframe: Interval; aggregate: number; limit: number }
 
     // загрузчик
     loadFromGecko: (params: {
         network?: "solana";
         pool: string;
         token: string;
-        timeframe?: Timeframe;
     }) => Promise<void>;
+
+    getCandles: (p: { network: string; pool: string; timeframe?: Interval; aggregate?: number; limit?: number }) => Promise<void>
 };
